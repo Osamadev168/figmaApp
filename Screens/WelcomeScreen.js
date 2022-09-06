@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import {
   useFonts,
   Inter_400Regular,
@@ -20,6 +21,7 @@ export default function WelcomeScreen({ navigation, route }) {
     Inter_100Thin,
     Inter_500Medium,
   });
+
   if (fontsLoaded) {
     {
       return (
@@ -41,8 +43,9 @@ export default function WelcomeScreen({ navigation, route }) {
             onPress={() => {
               navigation.navigate("User", { name: userName ? userName : "" });
             }}
+            style={styles.button}
           >
-            <View style={styles.button}>
+            <View>
               <Text style={styles.buttonText}>Confirm</Text>
             </View>
           </TouchableOpacity>
@@ -88,14 +91,24 @@ const styles = StyleSheet.create({
     color: "black",
   },
   button: {
+    // justifyContent: "center",
+    // alignItems: "center",
+    // marginTop: 230,
+    // // marginBottom: 40,
+    // backgroundColor: "white",
+    // width: 274,
+    // height: 44,
+    // borderRadius: 40,
+    // marginLeft: 63,
+    // flex: 1,
+    width: "100%",
+    height: 50,
+    backgroundColor: "rgba(131, 210, 255, 1)",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 300,
-    backgroundColor: "rgba(165, 210, 220, 1)",
-    width: 274,
-    height: 44,
-    borderRadius: 40,
-    marginLeft: 63,
+    position: "absolute", //Here is the trick
+    bottom: 0, //Here is the trick
+    // justifyContent: "space-between",
   },
   buttonText: {
     fontFamily: "Inter_500Medium",
