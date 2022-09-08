@@ -1,7 +1,7 @@
 node_modules/
 .expo/
 dist/
-Firebase/
+/Firebase
 npm-debug.*
 *.jks
 *.p8
