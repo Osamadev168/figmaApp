@@ -50,7 +50,10 @@ const Signupscreen = ({ navigation, route }) => {
           onChangeText={(password) => setPassword(password)}
         />
       </View>
-      <TouchableOpacity style={styles.Button} onPress={createUser}>
+      <TouchableOpacity
+        style={styles.Button}
+        onPress={() => navigation.push("Creds")}
+      >
         <Text style={styles.ButtonText}>Confrim</Text>
       </TouchableOpacity>
     </SafeAreaView>

@@ -5,31 +5,81 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  ActivityIndicator,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
+import { db } from "../Firebase/config";
+import { addDoc, collection } from "firebase/firestore";
+const UserCredentialsScreen = ({ route, navigation }) => {
+  const [userName, setUserName] = useState("");
+  const [Gender, setGender] = useState("");
+  const [Country, setCountry] = useState("");
+  const [Interests, setInterests] = useState("");
+  const [Addional, setAddional] = useState("");
+  const [Loading, setLoading] = useState(false);
+  const addCreds = async () => {
+    setLoading(true);
 
-const UserCredentialsScreen = ({ route }) => {
+    try {
+      const DocRef = await addDoc(collection(db, "Users"), {
+        username: userName,
+        gender: Gender,
+        country: Country,
+        interests: Interests,
+        addional: Addional,
+      }).then(() => {
+        alert("Profile Info Added!");
+        setLoading(false);
+        navigation.push("Home");
+      });
+    } catch (e) {
+      alert(e);
+    }
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.HeaderText}>
         <Text style={styles.text1}>
-          Welcome {route.params.name ? route.params.name : ""}!
+          {/* Welcome {route.params.name ? route.params.name : ""}! */}
         </Text>
         <Text style={styles.text2}>
           We need some more information to get to know you :)
         </Text>
       </View>
       <View style={styles.forms}>
-        <TextInput style={styles.inputForm} placeholder="Gender" />
-        <TextInput style={styles.inputForm} placeholder="Country" />
-        <TextInput style={styles.inputForm} placeholder="Interests" />
+        <TextInput
+          style={styles.inputForm}
+          placeholder="User name"
+          onChangeText={(text) => setUserName(text)}
+        />
+
+        <TextInput
+          style={styles.inputForm}
+          placeholder="Gender"
+          onChangeText={(text) => setGender(text)}
+        />
+        <TextInput
+          style={styles.inputForm}
+          placeholder="Country"
+          onChangeText={(text) => setCountry(text)}
+        />
+        <TextInput
+          style={styles.inputForm}
+          placeholder="Interests"
+          onChangeText={(text) => setInterests(text)}
+        />
         <TextInput
           style={styles.inputForm}
           placeholder="What are you doing these days"
+          onChangeText={(text) => setAddional(text)}
         />
       </View>
-      <TouchableOpacity style={styles.Button}>
-        <Text style={styles.ButtonText}>Finish</Text>
+      <TouchableOpacity style={styles.Button} onPress={addCreds}>
+        {Loading ? (
+          <ActivityIndicator size={"small"} color="green" />
+        ) : (
+          <Text style={styles.ButtonText}>Finish</Text>
+        )}
       </TouchableOpacity>
     </SafeAreaView>
   );
@@ -78,7 +128,7 @@ const styles = StyleSheet.create({
     right: 0,
     margin: 20,
     marginRight: 40,
-    top: 500,
+    top: 560,
     borderRadius: 30,
     justifyContent: "center",
     alignItems: "center",
